@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+<!-- Project informations -->
+  <groupId>com</groupId>
+  <artifactId>danger</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Danger</name>
+
+<!-- Project properties -->
+  <properties>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+
+    <jRubyVersion>9.2.0.0</jRubyVersion>
+
+    <bundlerGemVersion>1.16.1</bundlerGemVersion>
+    <dangerGemVersion>5.6.2</dangerGemVersion>
+
+    <buildHelperPluginVersion>3.0.0</buildHelperPluginVersion>
+    <cleanPluginVersion>3.0.0</cleanPluginVersion>
+    <deployPluginVersion>2.8.2</deployPluginVersion>
+    <enforcerPluginVersion>3.0.0-M1</enforcerPluginVersion>
+    <installPluginVersion>2.5.2</installPluginVersion>
+    <jruby.plugins.version>1.1.5</jruby.plugins.version>
+    <jRuby9ExecPluginVersion>0.3.1</jRuby9ExecPluginVersion>
+    <resourcesPluginVersion>3.0.2</resourcesPluginVersion>
+    <sitePluginVersion>3.6</sitePluginVersion>
+    <versionsPluginVersion>2.5</versionsPluginVersion>
+  </properties>
+
+<!-- Project dependencies -->
+  <dependencies>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>bundler</artifactId>
+      <version>${bundlerGemVersion}</version>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>danger</artifactId>
+      <version>${dangerGemVersion}</version>
+      <type>gem</type>
+    </dependency>
+  </dependencies>
+
+<!-- Project repositories -->
+  <repositories>
+    <repository>
+      <id>rubygems-releases</id>
+      <url>http://rubygems-proxy.torquebox.org/releases</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+<!-- Project build settings -->
+  <build>
+    <extensions>
+      <extension>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-extension</artifactId>
+        <version>${jruby.plugins.version}</version>
+      </extension>
+    </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${buildHelperPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${cleanPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${deployPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${enforcerPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${installPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.torquebox.mojo</groupId>
+          <artifactId>jruby9-exec-maven-plugin</artifactId>
+          <version>${jRuby9ExecPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${resourcesPluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${sitePluginVersion}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versionsPluginVersion}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.torquebox.mojo</groupId>
+        <artifactId>jruby9-exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>code-review</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+              <execArgs>--fail-on-errors=true pr </execArgs>
+              <env>
+                <DANGER_GITHUB_API_TOKEN>fa832a5a2ff775c9a0acc4e8975aa0af10029572</DANGER_GITHUB_API_TOKEN>
+              </env>
+              <jrubyVersion>${jRubyVersion}</jrubyVersion>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

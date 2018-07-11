@@ -1,0 +1,9 @@
+image: maven:3-jdk-8
+
+stages:
+  - build
+
+danger-review:
+  stage: build
+  script:
+    - mvn validate
