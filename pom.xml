@@ -20,6 +20,7 @@
 
     <bundlerGemVersion>1.16.1</bundlerGemVersion>
     <dangerGemVersion>5.6.2</dangerGemVersion>
+    <dangerCommitLintGemVersion>0.0.6</dangerCommitLintGemVersion>
 
     <buildHelperPluginVersion>3.0.0</buildHelperPluginVersion>
     <cleanPluginVersion>3.0.0</cleanPluginVersion>
@@ -33,38 +34,21 @@
     <versionsPluginVersion>2.5</versionsPluginVersion>
   </properties>
 
-<!-- Project dependencies -->
-  <dependencies>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>bundler</artifactId>
-      <version>${bundlerGemVersion}</version>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>danger</artifactId>
-      <version>${dangerGemVersion}</version>
-      <type>gem</type>
-    </dependency>
-  </dependencies>
-
 <!-- Project repositories -->
   <repositories>
     <repository>
       <id>rubygems-releases</id>
       <url>http://rubygems-proxy.torquebox.org/releases</url>
-      <layout>default</layout>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
     </repository>
   </repositories>
+
+<!-- Project plugin repositories -->
+  <pluginRepositories>
+    <pluginRepository>
+      <id>rubygems-releases</id>
+      <url>http://rubygems-proxy.torquebox.org/releases</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 <!-- Project build settings -->
   <build>
@@ -131,18 +115,40 @@
         <executions>
           <execution>
             <id>code-review</id>
-            <phase>validate</phase>
             <goals>
               <goal>exec</goal>
             </goals>
-              <execArgs>--fail-on-errors=true pr </execArgs>
-              <env>
-                <DANGER_GITHUB_API_TOKEN>fa832a5a2ff775c9a0acc4e8975aa0af10029572</DANGER_GITHUB_API_TOKEN>
-              </env>
+            <configuration>
+              <command>danger</command>
+              <execArgLines>
+                <arg>--fail-on-errors=true</arg>
+                <arg>pr</arg>
+                <arg>https://github.com/redouaneB/danger-test/pull/1</arg>
+              </execArgLines>
               <jrubyVersion>${jRubyVersion}</jrubyVersion>
             </configuration>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>bundler</artifactId>
+            <version>${bundlerGemVersion}</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>danger</artifactId>
+            <version>${dangerGemVersion}</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>danger-commit_lint</artifactId>
+            <version>${dangerCommitLintGemVersion}</version>
+            <type>gem</type>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
